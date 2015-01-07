@@ -1,0 +1,41 @@
+= Wake On LAN
+
+* http://wakeonlan.rubyforge.com/
+* mailto:jens@hilli.dk
+
+== Description
+
+Wake On LAN library and system executable
+
+== Prerequisites
+
+Ruby 1.8.6 or later
+
+== Installation
+
+You can use RubyGems [rubyforge.org/projects/rubygems] to install the latest version of the WakeOnLAN library remotely.
+
+  gem install --remote wakeonlan
+
+
+== Usage
+
+  require 'wakeonlan'
+
+   wol = WakeOnLan.new
+   wol.wake("00:14:5e:2a:1c:f7") # Send magic packet to the machine with the MAC address 00:14:5e:2a:1c:f7
+   wol.close
+
+or just simply:
+
+  WakeOnLan.wake!("00:14:5e:2a:1c:f7") 
+
+or
+
+  WakeOnLan.wake!("my-sleepy-host")
+
+if you have a /etc/ethers file. See `man 5 ethers` on a UNIX/BSD/Linux system
+
+== LICENSE
+
+WakeOnLAN library is Copyright (c) 2009 by Jens Hilligsoe. It is free software. Redistribution is permitted under the same terms and conditions as the standard Ruby distribution. See the COPYING file in the Ruby distribution for details. 

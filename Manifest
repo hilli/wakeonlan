@@ -1,0 +1,8 @@
+Manifest
+README.rdoc
+Rakefile
+bin/wakeonlan
+lib/wakeonlan.rb
+test/ethers
+test/test-wakeonlan.rb
+wakeonlan.gemspec

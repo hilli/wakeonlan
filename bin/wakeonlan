@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+# $Id: wakeonlan 4 2009-11-01 21:46:25Z hilli $
+
+require 'optparse'
+require File.dirname(__FILE__) + '/../lib/wakeonlan'
+
+options = {
+  :ethers => nil,
+  :ip => "255.255.255.255",
+  :port => 9,
+  :verbose => false
+}
+
+opts = OptionParser.new do |opts|
+  opts.banner = "WakeOnLan: Ruby WakeOnLan Client"
+  opts.define_head "Usage: wakeonlan [options] [[MAC|IP|hostname] ...]"
+  opts.separator " "
+  opts.separator "Examples:"
+  opts.separator " wakeonlan 00:1e:4f:43:6d:f4"
+  opts.separator " wakeonlan 192.168.1.2"
+  opts.separator " "
+  opts.separator "Options:"
+
+  opts.on("-e FILE", "--ethers FILE", String, "Use FILE instead of /etc/ethers [default]") do |e|
+    options[:ethers] = e
+  end
+
+  opts.on("-p PORT", "--port PORT", Integer, "Port number to send the magick packet to - Default is 9") do |p|
+    options[:port] = p
+  end
+
+  opts.on("-v", "--verbose", "Verbose output") do |p|
+    options[:verbose] = true
+  end
+
+  opts.on("-a IP", "--dest-ip IP", String, "IP address to send magic packet to. " +
+      " This can be a gateway to another subnet. The default is the broadcast address 255.255.255.255") do |i|
+    options[:ip] = i
+  end
+  
+  opts.separator " "
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+  opts.on_tail("-V", "--version", "Show version") do
+    puts "#{WakeOnLan::NAME} #{WakeOnLan::VERSION}"
+    exit
+  end
+end
+opts.parse!
+
+wakies = ARGV.shift
+
+if wakies.to_s.strip.empty?
+  puts opts
+  exit 1
+end
+
+errors = false
+@wol = WakeOnLan.new
+@wol.ethers = options[:ethers] if options[:ethers]
+@wol.verbose = options[:verbose] if options[:verbose]
+wakies.split.each do |wake|
+  mac = @wol.resolve_to_mac(wake)
+  if mac != nil
+    @wol.wake(mac, options[:ip], options[:port])
+  else
+    STDERR.puts "Address #{wake} does not resolve or validate"
+    errors = true
+  end
+end
+@wol.close
+if errors
+  exit 1
+end
