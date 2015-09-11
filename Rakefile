@@ -29,7 +29,7 @@ Echoe.new(PKG_NAME, PKG_VERSION) do |p|
   EOD
   p.ignore_pattern = [ "nbproject/**/*", "docs/**/*"]
   p.need_zip = true
-  p.has_rdoc = true
+  #p.has_rdoc = true
   p.files = FileList["{bin,lib,docs}/**/*"].exclude("rdoc").to_a
 
   p.development_dependencies += ["rake  ~>0.8",

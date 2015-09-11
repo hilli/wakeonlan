@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     allison (2.0.3)
     echoe (4.6.6)
@@ -20,3 +20,6 @@ PLATFORMS
 
 DEPENDENCIES
   echoe
+
+BUNDLED WITH
+   1.10.5
